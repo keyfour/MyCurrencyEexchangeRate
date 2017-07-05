@@ -6,6 +6,7 @@ import com.github.keyfour.currencyexchangerate.model.pojo.FixerResponse;
 
 import java.util.List;
 
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -18,6 +19,7 @@ import rx.schedulers.Schedulers;
 public class RatesPresenter implements RatesContract.Presenter {
 
     private final RatesContract.View view;
+    private Subscription subscription;
 
     public RatesPresenter(RatesContract.View view) {
         this.view = view;
@@ -26,7 +28,7 @@ public class RatesPresenter implements RatesContract.Presenter {
     @Override
     public void getRates(String base) {
         view.setLoadIndicator(true);
-        Fixer.getInstance().getService().getRates(base)
+        subscription = Fixer.getInstance().getService().getRates(base)
                 .subscribeOn(Schedulers.io())
                 .map(FixerResponse::getRates)
                 .map(Currencies.Mapper::map)
@@ -36,7 +38,9 @@ public class RatesPresenter implements RatesContract.Presenter {
 
     @Override
     public void cancel() {
-
+        if (subscription != null && !subscription.isUnsubscribed()) {
+            subscription.unsubscribe();
+        }
     }
 
     private class Subscriber extends rx.Subscriber<List<String>> {
