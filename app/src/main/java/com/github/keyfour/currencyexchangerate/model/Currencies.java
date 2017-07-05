@@ -1,9 +1,13 @@
 package com.github.keyfour.currencyexchangerate.model;
 
+import android.util.Log;
+
 import com.github.keyfour.currencyexchangerate.model.pojo.Rates;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Description
@@ -48,12 +52,37 @@ public class Currencies {
             "USD"
     };
 
-    public static Double getRate(Rates rates, String name) throws ClassNotFoundException,
-            NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        Class<?> aClass = Class.forName("Rates");
-        Method method = aClass.getMethod("get" + name);
-        Double rate = (Double) method.invoke(aClass);
+    public static Double getRate(Rates rates, String name) {
+        Double rate = null;
+        try {
+            Method method = Rates.class.getMethod("get" + name);
+            rate = (Double) method.invoke(rates);
+        } catch (NoSuchMethodException e) {
+            log(e.getMessage());
+        } catch (InvocationTargetException e) {
+            log(e.getMessage());
+        } catch (IllegalAccessException e) {
+            log(e.getMessage());
+        }
+
         return rate;
     }
 
+    private static int log(String message) {
+        return Log.d(Currencies.class.getSimpleName(), message);
+    }
+
+    public static class Mapper {
+
+        public static List<String> map (Rates rates) {
+            ArrayList<String> ratesList = new ArrayList<>(Currencies.names.length);
+            for (String name : Currencies.names) {
+                Double rate = Currencies.getRate(rates, name);
+                if (rate != null) {
+                    ratesList.add(name + ": " + String.valueOf(rate));
+                }
+            }
+            return ratesList;
+        }
+    }
 }
