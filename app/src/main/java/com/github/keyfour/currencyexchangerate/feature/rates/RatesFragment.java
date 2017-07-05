@@ -69,6 +69,12 @@ public class RatesFragment extends Fragment implements RatesContract.View {
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        presenter.cancel();
+    }
+
+    @Override
     public void showRates(List<String> rates) {
         textViewRates.setText("");
         for (String rate : rates) {
