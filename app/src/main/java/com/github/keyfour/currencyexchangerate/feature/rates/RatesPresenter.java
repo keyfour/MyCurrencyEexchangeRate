@@ -1,7 +1,10 @@
 package com.github.keyfour.currencyexchangerate.feature.rates;
 
 import com.github.keyfour.currencyexchangerate.data.Fixer;
+import com.github.keyfour.currencyexchangerate.model.Currencies;
 import com.github.keyfour.currencyexchangerate.model.pojo.FixerResponse;
+
+import java.util.List;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -25,6 +28,8 @@ public class RatesPresenter implements RatesContract.Presenter {
         view.setLoadIndicator(true);
         Fixer.getInstance().getService().getRates(base)
                 .subscribeOn(Schedulers.io())
+                .map(FixerResponse::getRates)
+                .map(Currencies.Mapper::map)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber());
     }
@@ -34,7 +39,7 @@ public class RatesPresenter implements RatesContract.Presenter {
 
     }
 
-    private class Subscriber extends rx.Subscriber<FixerResponse> {
+    private class Subscriber extends rx.Subscriber<List<String>> {
 
         @Override
         public void onCompleted() {
@@ -48,8 +53,8 @@ public class RatesPresenter implements RatesContract.Presenter {
         }
 
         @Override
-        public void onNext(FixerResponse fixerResponse) {
-            view.showRates(fixerResponse.getRates());
+        public void onNext(List<String> rates) {
+            view.showRates(rates);
             view.setLoadIndicator(false);
         }
     }
