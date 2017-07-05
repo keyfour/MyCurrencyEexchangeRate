@@ -1,6 +1,8 @@
 package com.github.keyfour.currencyexchangerate.data;
 
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * {@link FixerService} builder and wrapper
@@ -17,6 +19,8 @@ public class Fixer {
     private Fixer() {
 
         Retrofit retrofit = new Retrofit.Builder()
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
                 .baseUrl("http://api.fixer.io")
                 .build();
 
