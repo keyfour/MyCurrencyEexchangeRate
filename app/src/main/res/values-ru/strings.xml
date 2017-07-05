@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Курсы валют</string>
+    <string name="enter_currency_here_xxx">Введите название валюты (XXX)</string>
+    <string name="get_rates">Узнать курсы валют</string>
+    <string name="loading">Загружаем...</string>
+</resources>
