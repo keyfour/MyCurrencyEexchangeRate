@@ -1,6 +1,6 @@
 package com.github.keyfour.currencyexchangerate.feature.rates;
 
-import com.github.keyfour.currencyexchangerate.model.pojo.Rates;
+import java.util.List;
 
 /**
  * Description
@@ -11,7 +11,7 @@ import com.github.keyfour.currencyexchangerate.model.pojo.Rates;
 public interface RatesContract {
 
     interface View {
-        void showRates(Rates rates);
+        void showRates(List<String> rates);
         void showMessage(String message);
         void setLoadIndicator(boolean state);
     }
