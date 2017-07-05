@@ -19,13 +19,13 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-        RatesFragment recallsFragment = (RatesFragment) getSupportFragmentManager()
+        RatesFragment ratesFragment = (RatesFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.content_frame);
 
-        if (recallsFragment == null) {
-            recallsFragment = RatesFragment.newInstance();
+        if (ratesFragment == null) {
+            ratesFragment = RatesFragment.newInstance();
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.content_frame, recallsFragment).commit();
+                    .add(R.id.content_frame, ratesFragment).commit();
         }
 
     }
